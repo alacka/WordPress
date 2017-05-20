@@ -1,0 +1,87 @@
+// Создаем виджет Популярные записи
+class popular_widget extends WP_Widget {
+
+function __construct() {
+parent::__construct(
+// Выбираем ID для своего виджета
+'popular_widget', 
+
+// Название виджета, показано в консоли
+__('Популярные записи', 'popular_widget_domain'), 
+
+// Описание виджета
+array( 'description' => __( 'Популярные записи', 'popular_widget_domain' ), ) 
+);
+}
+
+// Создаем код для виджета - 
+// сначала небольшая идентификация
+public function widget( $args, $instance ) {
+$title = apply_filters( 'widget_title', $instance['title'] );
+// до и после идентификации переменных темой
+echo $args['before_widget'];
+if ( ! empty( $title ) )
+echo $args['before_title'] . $title . $args['after_title'];
+
+// Именно здесь записываем весь код и вывод данных
+?>
+
+
+
+
+<div class="custom-popular-widget">
+<ul>
+<?php
+$args = array( 'numberposts' => 5, 'meta_key' => 'post_views_count', 'orderby' => 'meta_value_num', 'order' => 'DESC' );
+query_posts($args);
+while ( have_posts() ) : the_post();
+?>
+<li>
+	<a href="<?php the_permalink(); ?>">
+		<? $image_url = wp_get_attachment_image_src( get_post_thumbnail_id(), 'full');  ?>
+		<img src="<?php echo $image_url[0]; ?>">
+		<div class="custom-popular-widget-title"><?php the_title(); ?></div>
+		<div class="custom-popular-widget-time"><?php the_time('j F Y'); ?></div>
+	</a>
+</li>
+<?php endwhile; wp_reset_query(); ?>
+</ul>
+</div>
+
+
+
+
+<?
+echo $args['after_widget'];
+}
+		
+// Закрываем код виджета
+public function form( $instance ) {
+if ( isset( $instance[ 'title' ] ) ) {
+$title = $instance[ 'title' ];
+}
+else {
+$title = __( 'Заголовок виджета', 'popular_widget_domain' );
+}
+// Для административной консоли
+?>
+<p>
+<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label> 
+<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+</p>
+<?php 
+}
+	
+// Обновление виджета
+public function update( $new_instance, $old_instance ) {
+$instance = array();
+$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
+return $instance;
+}
+} // Закрываем класс popular_widget
+
+// Регистрируем и запускаем виджет
+function popular_load_widget() {
+	register_widget( 'popular_widget' );
+}
+add_action( 'widgets_init', 'popular_load_widget' );
