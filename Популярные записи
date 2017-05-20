@@ -1,0 +1,57 @@
+function getPostViews($postID){
+    $count_key = 'post_views_count';
+    $count = get_post_meta($postID, $count_key, true);
+    if($count==''){
+        delete_post_meta($postID, $count_key);
+        add_post_meta($postID, $count_key, '0');
+        return "0";
+    }
+    return $count;
+}
+function setPostViews($postID) {
+    $count_key = 'post_views_count';
+    $count = get_post_meta($postID, $count_key, true);
+    if($count==''){
+        $count = 0;
+        delete_post_meta($postID, $count_key);
+        add_post_meta($postID, $count_key, '0');
+    }else{
+        $count++;
+        update_post_meta($postID, $count_key, $count);
+    }
+}
+
+
+
+
+
+
+
+<? setPostViews(get_the_ID()); ?>
+
+
+
+
+
+
+
+
+
+<div class="custom-popular-widget">
+<ul>
+<?php
+$args = array( 'numberposts' => 5, 'meta_key' => 'post_views_count', 'orderby' => 'meta_value_num', 'order' => 'DESC' );
+query_posts($args);
+while ( have_posts() ) : the_post();
+?>
+<li>
+	<a href="<?php the_permalink(); ?>">
+		<? $image_url = wp_get_attachment_image_src( get_post_thumbnail_id(), 'full');  ?>
+		<img src="<?php echo $image_url[0]; ?>">
+		<div class="custom-popular-widget-title"><?php the_title(); ?></div>
+		<div class="custom-popular-widget-time"><?php the_time('j F Y'); ?></div>
+	</a>
+</li>
+<?php endwhile; wp_reset_query(); ?>
+</ul>
+</div>
