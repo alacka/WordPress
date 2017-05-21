@@ -1,0 +1,137 @@
+// Это в жквери
+
+
+$(".carousel-inner > div:first-child").addClass('active');
+var slideto = -1;
+$(".carousel-indicators > li").attr('data-slide-to', function(){
+    var text = "";
+    slideto += 1;
+    text += slideto;
+    return text;
+});
+$(".carousel-indicators > li:first-child").addClass('active');
+
+
+
+// Вывод
+
+<? echo get_post_meta($post->ID, 'link', true) ?>
+
+
+<?php $posts = get_posts ("post_type=slider"); ?> 
+<?php if ($posts) : foreach ($posts as $post) : setup_postdata ($post); ?>
+Код
+<?php endforeach; wp_reset_postdata(); endif; ?>
+
+
+
+
+
+// Это в фукшен
+
+if ( ! function_exists( 'slider_cp' ) ) {
+    function slider_cp() {
+ 
+        $labels = array(
+            'name'                => _x( 'Слайдер', 'Post Type General Name', 'slider' ),
+            'singular_name'       => _x( 'Слайдер', 'Post Type Singular Name', 'slider' ),
+            'menu_name'           => __( 'Слайдер', 'slider' ),
+            'parent_item_colon'   => __( 'Родительский:', 'slider' ),
+            'all_items'           => __( 'Все записи', 'slider' ),
+            'view_item'           => __( 'Просмотреть', 'slider' ),
+            'add_new_item'        => __( 'Добавить новую запись в Красную Книгу', 'slider' ),
+            'add_new'             => __( 'Добавить новую', 'slider' ),
+            'edit_item'           => __( 'Редактировать запись', 'slider' ),
+            'update_item'         => __( 'Обновить запись', 'slider' ),
+            'search_items'        => __( 'Найти запись', 'slider' ),
+            'not_found'           => __( 'Не найдено', 'slider' ),
+            'not_found_in_trash'  => __( 'Не найдено в корзине', 'slider' ),
+        );
+        $args = array(
+            'labels'              => $labels,
+            'supports'            => array( 'title', 'editor', 'thumbnail', ),
+            'taxonomies'          => array( 'slider_tax' ), // категории, которые мы создадим ниже
+            'public'              => true,
+            'menu_position'       => 5,
+            'menu_icon'           => 'dashicons-book',
+        );
+        register_post_type( 'slider', $args );
+    }
+    add_action( 'init', 'slider_cp', 0 );
+}
+function slider_meta_box() {  
+    add_meta_box(  
+        'slider_meta_box', // Идентификатор(id)
+        'Слайд', // Заголовок области с мета-полями(title)
+        'show_my_red_metabox', // Вызов(callback)
+        'slider',
+        'normal',
+        'high');
+}  
+add_action('add_meta_boxes', 'slider_meta_box'); // Запускаем функцию
+$red_meta_fields = array(
+// Здесь добавлять новые поля
+
+    array(  
+        'label' => 'Ссылка',  
+        'desc'  => '',  
+        'id'    => 'link', // идентификатор для вывода
+        'type'  => 'text'  // Указываем тип поля.
+    )
+
+// Здесь добавлять новые поля
+);
+function show_my_red_metabox() {  
+global $red_meta_fields;
+global $post;
+echo '<input type="hidden" name="custom_meta_box_nonce" value="'.wp_create_nonce(basename(__FILE__)).'" />';  
+    echo '<table class="form-table">';  
+    foreach ($red_meta_fields as $field) {  
+        $meta = get_post_meta($post->ID, $field['id'], true);  
+        echo '<tr>
+                <th><label for="'.$field['id'].'">'.$field['label'].'</label></th>
+                <td>';  
+                switch($field['type']) {  
+                    // Текстовое поле
+					case 'text':  
+					    echo '<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$meta.'" size="30" />
+					        <br /><span class="description">'.$field['desc'].'</span>';  
+					break;
+					// Список
+					case 'select':  
+					    echo '<select name="'.$field['id'].'" id="'.$field['id'].'">';  
+					    foreach ($field['options'] as $option) {  
+					        echo '<option', $meta == $option['value'] ? ' selected="selected"' : '', ' value="'.$option['value'].'">'.$option['label'].'</option>';  
+					    }  
+					    echo '</select><br /><span class="description">'.$field['desc'].'</span>';  
+					break;
+                }
+        echo '</td></tr>';  
+    }  
+    echo '</table>';
+}
+function save_my_red_meta_fields($post_id) {  
+    global $red_meta_fields;
+    if (!wp_verify_nonce($_POST['custom_meta_box_nonce'], basename(__FILE__)))  
+        return $post_id;  
+    // Проверяем авто-сохранение
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)  
+        return $post_id;  
+    // Проверяем права доступа  
+    if ('slider' == $_POST['post_type']) {  
+        if (!current_user_can('edit_page', $post_id))  
+            return $post_id;  
+        } elseif (!current_user_can('edit_post', $post_id)) {  
+            return $post_id;  
+    }
+    foreach ($red_meta_fields as $field) {  
+        $old = get_post_meta($post_id, $field['id'], true); // Получаем старые данные (если они есть), для сверки
+        $new = $_POST[$field['id']];  
+        if ($new && $new != $old) {  // Если данные новые
+            update_post_meta($post_id, $field['id'], $new); // Обновляем данные
+        } elseif ('' == $new && $old) {  
+            delete_post_meta($post_id, $field['id'], $old); // Если данных нету, удаляем мету.
+        }  
+    } // end foreach  
+}  
+add_action('save_post', 'save_my_red_meta_fields'); // Запускаем функцию сохранения
