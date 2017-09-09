@@ -1,7 +1,31 @@
-add_action( 'after_setup_theme', 'theme_register_nav_menu' );
-function theme_register_nav_menu() {
-	register_nav_menu( 'primary', 'Primary Menu' );
-}
+<div class="cataloge-title"><? echo gm_get_theme_menu_name(cataloge); ?></div>
+					<?
+					wp_nav_menu( array(
+					'theme_location'  => 'cataloge',
+					'menu'            => 'cataloge', 
+					'container'       => '', 
+					'container_class' => '', 
+					'container_id'    => '',
+					'menu_class'      => 'menu', 
+					'menu_id'         => '',
+					'echo'            => true,
+					'fallback_cb'     => 'cataloge',
+					'before'          => '',
+					'after'           => '',
+					'link_before'     => '',
+					'link_after'      => '',
+					'items_wrap'      => '<ul class="cataloge">%3$s</ul>',
+					'depth'           => 0
+					) );
+					?>
+					
+					
+					
 
-// Вывести меню в шаблоне
-<?php wp_nav_menu( array('menu' => 'primary' )); ?>
+
+/*********** В функшен
+
+add_action( 'after_setup_theme', 'theme_register_nav_menu_cataloge' );
+	function theme_register_nav_menu_cataloge() {
+		register_nav_menu( 'cataloge', 'Каталог' );
+	}
