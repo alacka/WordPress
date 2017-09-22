@@ -1,0 +1,14 @@
+$args = array( 
+                        'posts_per_page' => 5, 
+                        'orderby' => 'date', 
+                        'category_name' => 'team', 
+                         );
+    $postsArr = get_posts( $args );
+    $chunkPosts = array_chunk($postsArr ,4);
+    foreach($chunkPosts as $posts){
+        echo '<div class="див блока">';
+             foreach($posts as $post){
+                   // Выводим посты в блоке.
+             }
+        echo '</div>';
+    }
