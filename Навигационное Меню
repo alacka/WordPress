@@ -1,4 +1,18 @@
 <div class="cataloge-title"><? echo gm_get_theme_menu_name(cataloge); ?></div>
+
+function gm_get_theme_menu_name( $theme_location ) {
+	if( ! $theme_location ) return false;
+ 
+	$theme_locations = get_nav_menu_locations();
+	if( ! isset( $theme_locations[$theme_location] ) ) return false;
+ 
+	$menu_obj = get_term( $theme_locations[$theme_location], 'nav_menu' );
+	if( ! $menu_obj ) $menu_obj = false;
+	if( ! isset( $menu_obj->name ) ) return false;
+ 
+	return $menu_obj->name;
+}
+
 					<?
 					wp_nav_menu( array(
 					'theme_location'  => 'cataloge',
