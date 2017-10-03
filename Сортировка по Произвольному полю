@@ -1,0 +1,16 @@
+<? $args = array( 'meta_key'=>'vote', 'meta_compare'=>'>=', 'meta_value'=>5, 'posts_per_page'=>100 );
+				query_posts( $args ); while ( have_posts() ) : the_post(); ?>
+				<a href="<? the_permalink(); ?>" class="new-coupon-box">
+					<? $image_url = wp_get_attachment_image_src( get_post_thumbnail_id(), 'meddium');  ?>
+					<img src="<?php echo $image_url[0]; ?>">
+					<div class="new-coupon-box-title">
+						<? the_title(); ?>
+						<? the_field('tip'); ?>
+					</div>
+					<div>
+						<div class="new-coupon-box-prozent"><? the_title(); ?></div>
+						<div class="new-coupon-box-day"><? the_title(); ?></div>
+						<div class="new-coupon-box-learnmore">Learn More</div>
+					</div>
+				</a>
+<?php endwhile; wp_reset_query(); ?>
