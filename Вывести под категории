@@ -1,0 +1,31 @@
+<?php 
+	 query_posts("cat=6");
+	 if (have_posts()) : while (have_posts()) : the_post(); 
+	 $k = get_the_category($post->ID);
+	 if ( $k[0]->cat_ID == $cat ) { 
+	 echo '<li><a href="'; the_permalink(); echo'" rel="bookmark">';
+	 the_title(); 
+	 echo '</a></li>';
+	 }  endwhile; else: 
+	 echo '<p class="podcat">Upss</p>'; 
+	 endif; 
+?>
+<div id="moreCategories">
+	<?php                                                                                          
+	$current_cat = get_query_var('cat');
+	global $ancestor;
+	$childcats = get_categories('child_of='.$current_cat.'&hide_empty=0&orderby=id');
+	foreach ($childcats as $childcat) {
+	if (cat_is_ancestor_of($ancestor, $childcat->cat_ID) == false){
+	echo '<h2><a href='.get_category_link($childcat->cat_ID).'>';
+	echo $childcat->cat_name . '</a></h2>'; 
+	$mycat=get_the_category(); $mycat=$mycat[0];  
+	$postslist = get_posts('posts_per_page=-1&category='.$childcat->cat_ID);
+	?> 
+	<?php foreach ($postslist as $post) : setup_postdata($post); ?>
+	<div class="subpagesAtCategory">
+		<a href="<?php echo the_permalink(); ?>"><?php the_title(); ?></a>
+	</div>
+	<?php endforeach; ?> 
+	<? $ancestor = $childcat->cat_ID; } } ?>
+</div>
