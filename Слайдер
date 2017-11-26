@@ -65,13 +65,13 @@ function slider_meta_box() {
     add_meta_box(  
         'slider_meta_box', // Идентификатор(id)
         'Слайд', // Заголовок области с мета-полями(title)
-        'show_my_red_metabox', // Вызов(callback)
+        'show_my_sliderbox', // Вызов(callback)
         'slider',
         'normal',
         'high');
 }  
 add_action('add_meta_boxes', 'slider_meta_box'); // Запускаем функцию
-$red_meta_fields = array(
+$slider_fields = array(
 // Здесь добавлять новые поля
 
     array(  
@@ -83,12 +83,12 @@ $red_meta_fields = array(
 
 // Здесь добавлять новые поля
 );
-function show_my_red_metabox() {  
-global $red_meta_fields;
+function show_my_sliderbox() {  
+global $slider_fields;
 global $post;
 echo '<input type="hidden" name="custom_meta_box_nonce" value="'.wp_create_nonce(basename(__FILE__)).'" />';  
     echo '<table class="form-table">';  
-    foreach ($red_meta_fields as $field) {  
+    foreach ($slider_fields as $field) {  
         $meta = get_post_meta($post->ID, $field['id'], true);  
         echo '<tr>
                 <th><label for="'.$field['id'].'">'.$field['label'].'</label></th>
@@ -112,8 +112,8 @@ echo '<input type="hidden" name="custom_meta_box_nonce" value="'.wp_create_nonce
     }  
     echo '</table>';
 }
-function save_my_red_meta_fields($post_id) {  
-    global $red_meta_fields;
+function save_my_slider_fields($post_id) {  
+    global $slider_fields;
     if (!wp_verify_nonce($_POST['custom_meta_box_nonce'], basename(__FILE__)))  
         return $post_id;  
     // Проверяем авто-сохранение
@@ -126,7 +126,7 @@ function save_my_red_meta_fields($post_id) {
         } elseif (!current_user_can('edit_post', $post_id)) {  
             return $post_id;  
     }
-    foreach ($red_meta_fields as $field) {  
+    foreach ($slider_fields as $field) {  
         $old = get_post_meta($post_id, $field['id'], true); // Получаем старые данные (если они есть), для сверки
         $new = $_POST[$field['id']];  
         if ($new && $new != $old) {  // Если данные новые
@@ -136,4 +136,4 @@ function save_my_red_meta_fields($post_id) {
         }  
     } // end foreach  
 }  
-add_action('save_post', 'save_my_red_meta_fields'); // Запускаем функцию сохранения
+add_action('save_post', 'save_my_slider_fields'); // Запускаем функцию сохранения
