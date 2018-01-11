@@ -1,0 +1,299 @@
+function repeatable_editor_get_meta( $value ) {
+	global $post;
+
+	$field = get_post_meta( $post->ID, $value, true );
+	if ( ! empty( $field ) ) {
+		return is_array( $field ) ? stripslashes_deep( $field ) : stripslashes( wp_kses_decode_entities( $field ) );
+	} else {
+		return false;
+	}
+}
+
+function repeatable_editor_add_meta_box() {
+	global $_wp_post_type_features;
+	if (isset($_wp_post_type_features['page']['editor']) && $_wp_post_type_features['page']['editor']) {
+		/* unset($_wp_post_type_features['page']['editor']); */
+	}
+
+
+global $post;
+if ( 'new-page.php' == get_post_meta( $post->ID, '_wp_page_template', true )  ) {
+   
+	add_meta_box(
+		'repeatable_editor-repeatable-editor',
+		__( 'Новая страница', 'repeatable_editor' ),
+		'repeatable_editor_repeatable_editor_html',
+		'page',
+		'normal',
+		'high'
+	);
+
+} 
+
+add_meta_box(
+	'repeatable_editor-repeatable-editor',
+	__( 'Новая страница', 'repeatable_editor' ),
+	'repeatable_editor_repeatable_editor_html',
+	'post',
+	'normal',
+	'high'
+);
+
+
+}
+add_action( 'add_meta_boxes', 'repeatable_editor_add_meta_box', 0 );
+
+function repeatable_editor_repeatable_editor_html( $post) {
+	wp_nonce_field( '_repeatable_editor_repeatable_editor_nonce', 'repeatable_editor_repeatable_editor_nonce' );
+
+
+
+
+$contents = get_post_meta( $post->ID, 'repeatable_editor_repeatable_editor_content', true );
+$nazva = get_post_meta( $post->ID, 'repeatable_editor_nazva', true );
+$zena = get_post_meta( $post->ID, 'repeatable_editor_zena', true );
+$vremja_one = get_post_meta( $post->ID, 'repeatable_editor_vremja_one', true );
+$vremja_two = get_post_meta( $post->ID, 'repeatable_editor_vremja_two', true );
+$vremja_tree = get_post_meta( $post->ID, 'repeatable_editor_vremja_tree', true );
+$title_img = get_post_meta( $post->ID, 'repeatable_editor_title_img', true );
+$repeatable_kartinki = get_post_meta( $post->ID, 'repeatable_editor_repeatable_kartinki', true );
+$ssilka_konez = get_post_meta( $post->ID, 'repeatable_editor_ssilka_konez', true );
+$kartinkabok = get_post_meta( $post->ID, 'repeatable_editor_kartinkabok', true );
+
+/*
+	$contents = repeatable_editor_get_meta( 'repeatable_editor_repeatable_editor_content' );
+	$nazva = repeatable_editor_get_meta( 'repeatable_editor_nazva' );
+
+	$zena = repeatable_editor_get_meta( 'repeatable_editor_zena' );
+	$vremja_one = repeatable_editor_get_meta( 'repeatable_editor_vremja_one' );
+	$vremja_two = repeatable_editor_get_meta( 'repeatable_editor_vremja_two' );
+	$vremja_tree = repeatable_editor_get_meta( 'repeatable_editor_vremja_tree' );
+	$title_img = repeatable_editor_get_meta( 'repeatable_editor_title_img' );
+	$repeatable_kartinki = repeatable_editor_get_meta( 'repeatable_editor_repeatable_kartinki' );
+	$ssilka_konez = repeatable_editor_get_meta( 'repeatable_editor_ssilka_konez' );
+*/	
+	if ($contents && !empty($contents)) {
+		$contents = $contents;
+	} else {
+		$contents = array('');
+	}
+
+	if ($nazva && !empty($nazva)) {
+		$nazva = $nazva;
+	} else {
+		$nazva = array('');
+	}
+
+	if ($zena && !empty($zena)) {
+		$zena = $zena;
+	} else {
+		$zena = array('');
+	}
+
+	if ($vremja_one && !empty($vremja_one)) {
+		$vremja_one = $vremja_one;
+	} else {
+		$vremja_one = array('');
+	}
+
+	if ($vremja_two && !empty($vremja_two)) {
+		$vremja_two = $vremja_two;
+	} else {
+		$vremja_two = array('');
+	}
+
+	if ($vremja_tree && !empty($vremja_tree)) {
+		$vremja_tree = $vremja_tree;
+	} else {
+		$vremja_tree = array('');
+	}
+
+	if ($title_img && !empty($title_img)) {
+		$title_img = $title_img;
+	} else {
+		$title_img = array('');
+	}
+
+	if ($repeatable_kartinki && !empty($repeatable_kartinki)) {
+		$repeatable_kartinki = $repeatable_kartinki;
+	} else {
+		$repeatable_kartinki = array('');
+	}
+
+	if ($ssilka_konez && !empty($ssilka_konez)) {
+		$ssilka_konez = $ssilka_konez;
+	} else {
+		$ssilka_konez = array('');
+	}
+
+	if ($kartinkabok && !empty($kartinkabok)) {
+		$kartinkabok = $kartinkabok;
+	} else {
+		$kartinkabok = array('');
+	}
+
+
+	for ($i = 0; $i < count($contents); $i++) {
+		?>
+<style>
+.content-row input {
+width:100%;
+}
+.content-row textarea {
+width: 100%;
+    height: 100px;
+}
+</style>
+		<div class="content-row">
+<? /*
+<div style="font-weight:bold; marign-bottom:10px;">Картинка сбоку</div><br>
+
+$html = '<p class="description">';
+        $html .= 'Upload your PDF here.';
+    $html .= '</p>';
+    $html .= '<input type="file" id="wp_custom_attachment" name="repeatable_editor_kartinkabok[]" value="<?php echo $kartinkabok[$i]; ?>" size="25" />';
+     
+    echo $html; */
+?>
+
+
+
+<p>
+<div style="font-weight:bold; marign-bottom:10px;">Названия блока</div><br>
+<input type="text" name="repeatable_editor_nazva[]" id="repeatable_editor_nazva_<?php echo $i; ?>" value="<?php echo $nazva[$i]; ?>">
+</p>
+
+<p>
+<div style="font-weight:bold; marign-bottom:10px;">Цена блока</div><br>
+<input type="text" name="repeatable_editor_zena[]" id="repeatable_editor_zena_<?php echo $i; ?>" value="<?php echo $zena[$i]; ?>">
+</p>
+
+<p>
+<div style="font-weight:bold; marign-bottom:10px;">Текст блока</div><br>
+	<?php wp_editor( $contents[$i], 'repeatable_editor_repeatable_editor_content_' . $i, array(
+	    'wpautop'       => true,
+	    'textarea_name' => 'repeatable_editor_repeatable_editor_content[]',
+	    'textarea_rows' => 10,
+	) ); ?>
+</p>
+
+<p>
+<div style="font-weight:bold; marign-bottom:10px;">Время 1</div><br>
+<textarea type="text" name="repeatable_editor_vremja_one[]"><?php echo $vremja_one[$i]; ?></textarea>
+</p>
+
+<p>
+<div style="font-weight:bold; marign-bottom:10px;">Время 2</div><br>
+<textarea type="text" name="repeatable_editor_vremja_two[]"><?php echo $vremja_two[$i]; ?></textarea>
+</p>
+
+<p>
+<div style="font-weight:bold; marign-bottom:10px;">Время 3</div><br>
+<textarea type="text" name="repeatable_editor_vremja_tree[]"><?php echo $vremja_tree[$i]; ?></textarea>
+</p>
+
+<p>
+<div style="font-weight:bold; marign-bottom:10px;">Заголовок картинок</div><br>
+<input type="text" name="repeatable_editor_title_img[]" value="<?php echo $title_img[$i]; ?>">
+</p>
+
+<div style="font-weight:bold; marign-bottom:10px;">Картинки</div><br>
+	<?php wp_editor( $repeatable_kartinki[$i], 'repeatable_editor_repeatable_kartinki_' . $i, array(
+	    'wpautop'       => true,
+	    'textarea_name' => 'repeatable_editor_repeatable_kartinki[]',
+	    'textarea_rows' => 10,
+	) ); ?>
+</p>
+
+<p>
+<div style="font-weight:bold; marign-bottom:10px;">Ссылка Подробнее о случае</div><br>
+<input type="text" name="repeatable_editor_ssilka_konez[]"  value="<?php echo $ssilka_konez[$i]; ?>">
+</p>
+
+
+
+<a class="content-delete" href="#" style="color:#a00;float:right;text-decoration:none">Удалить блок</a>
+<br style="clear:both">
+
+
+</div>
+
+		<?php
+	}
+	?>
+	<p><a class="button" href="#" id="add_content">Добавить блок</a></p>
+	<script>
+		var startingContent = <?php echo count($contents) - 1; ?>;
+		jQuery('#add_content').click(function(e) {
+			e.preventDefault();
+			startingContent++;
+			var contentID = 'repeatable_editor_repeatable_editor_content_' + startingContent,
+				contentRow = '<p class="content-row">Сохраните запись тогда появляться новые поля для заполнения</p>';
+
+			jQuery('.content-row').eq(jQuery('.content-row').length - 1).after(contentRow);
+			tinymce.execCommand( 'mceAddEditor', true, 'test_testing' );
+			tinymce.init({ selector: '#' + contentID });
+		});
+		jQuery(document).on('click', '.content-delete', function() {
+			if (
+				jQuery('.content-row').length > 1 &&
+				confirm('Are you sure you want to delete this content?')
+			) {
+				jQuery(this).parent().remove();
+			}
+		});
+	</script>
+	<?php
+}
+
+function repeatable_editor_repeatable_editor_save( $post_id ) {
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
+	if ( ! isset( $_POST['repeatable_editor_repeatable_editor_nonce'] ) || ! wp_verify_nonce( $_POST['repeatable_editor_repeatable_editor_nonce'], '_repeatable_editor_repeatable_editor_nonce' ) ) return;
+	if ( ! current_user_can( 'edit_post' ) ) return;
+
+	if ( isset( $_POST['repeatable_editor_repeatable_editor_content'] ) ) {
+		$contents = $_POST['repeatable_editor_repeatable_editor_content'];
+		update_post_meta( $post_id, 'repeatable_editor_repeatable_editor_content', $contents );
+	}
+	if ( isset( $_POST['repeatable_editor_nazva'] ) ) {
+		$contents = $_POST['repeatable_editor_nazva'];
+		update_post_meta( $post_id, 'repeatable_editor_nazva', $contents );
+	}
+
+	if ( isset( $_POST['repeatable_editor_zena'] ) ) {
+		$contents = $_POST['repeatable_editor_zena'];
+		update_post_meta( $post_id, 'repeatable_editor_zena', $contents );
+	}
+	if ( isset( $_POST['repeatable_editor_vremja_one'] ) ) {
+		$contents = $_POST['repeatable_editor_vremja_one'];
+		update_post_meta( $post_id, 'repeatable_editor_vremja_one', $contents );
+	}
+	if ( isset( $_POST['repeatable_editor_vremja_two'] ) ) {
+		$contents = $_POST['repeatable_editor_vremja_two'];
+		update_post_meta( $post_id, 'repeatable_editor_vremja_two', $contents );
+	}
+	if ( isset( $_POST['repeatable_editor_vremja_tree'] ) ) {
+		$contents = $_POST['repeatable_editor_vremja_tree'];
+		update_post_meta( $post_id, 'repeatable_editor_vremja_tree', $contents );
+	}
+	if ( isset( $_POST['repeatable_editor_title_img'] ) ) {
+		$contents = $_POST['repeatable_editor_title_img'];
+		update_post_meta( $post_id, 'repeatable_editor_title_img', $contents );
+	}
+	if ( isset( $_POST['repeatable_editor_repeatable_kartinki'] ) ) {
+		$contents = $_POST['repeatable_editor_repeatable_kartinki'];
+		update_post_meta( $post_id, 'repeatable_editor_repeatable_kartinki', $contents );
+	}
+	if ( isset( $_POST['repeatable_editor_ssilka_konez'] ) ) {
+		$contents = $_POST['repeatable_editor_ssilka_konez'];
+		update_post_meta( $post_id, 'repeatable_editor_ssilka_konez', $contents );
+	}
+
+	if ( isset( $_POST['repeatable_editor_kartinkabok'] ) ) {
+		$contents = $_POST['repeatable_editor_kartinkabok'];
+		update_post_meta( $post_id, 'repeatable_editor_kartinkabok', $contents );
+	}
+
+
+}
+add_action( 'save_post', 'repeatable_editor_repeatable_editor_save' );
