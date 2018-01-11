@@ -112,3 +112,23 @@ function repeatable_editor_repeatable_editor_save( $post_id ) {
 
 }
 add_action( 'save_post', 'repeatable_editor_repeatable_editor_save' );
+
+
+
+
+
+
+
+
+
+/**************************************************вивод **********************************************************//
+
+
+    <?php 
+    global $post;
+    $nazva = get_post_meta( $post->ID, 'repeatable_editor_nazva', true );
+    if ($nazva && !empty($nazva)) { $nazva = $nazva; } else { $nazva = array(''); } 
+    for ($i = 0; $i < count($nazva); $i++) { ?>
+    <span class="product-options__item"><em class="product-options__item-text"><?php echo $nazva[$i]; ?></em></span>
+    <?php } ?>
+
