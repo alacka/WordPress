@@ -297,3 +297,204 @@ function repeatable_editor_repeatable_editor_save( $post_id ) {
 
 }
 add_action( 'save_post', 'repeatable_editor_repeatable_editor_save' );
+
+
+
+
+
+
+
+
+
+
+
+
+
+/***************************************** ВИВОД *********************************************************************/
+
+
+
+
+
+
+<?php 
+global $post;
+
+$contents = get_post_meta( $post->ID, 'repeatable_editor_repeatable_editor_content', true );
+$nazva = get_post_meta( $post->ID, 'repeatable_editor_nazva', true );
+
+$zena = get_post_meta( $post->ID, 'repeatable_editor_zena', true );
+$vremja_one = get_post_meta( $post->ID, 'repeatable_editor_vremja_one', true );
+$vremja_two = get_post_meta( $post->ID, 'repeatable_editor_vremja_two', true );
+$vremja_tree = get_post_meta( $post->ID, 'repeatable_editor_vremja_tree', true );
+$title_img = get_post_meta( $post->ID, 'repeatable_editor_title_img', true );
+$repeatable_kartinki = get_post_meta( $post->ID, 'repeatable_editor_repeatable_kartinki', true );
+$ssilka_konez = get_post_meta( $post->ID, 'repeatable_editor_ssilka_konez', true );
+	
+	if ($contents && !empty($contents)) {
+		$contents = $contents;
+	} else {
+		$contents = array('');
+	}
+
+	if ($nazva && !empty($nazva)) {
+		$nazva = $nazva;
+	} else {
+		$nazva = array('');
+	}
+
+	if ($zena && !empty($zena)) {
+		$zena = $zena;
+	} else {
+		$zena = array('');
+	}
+
+	if ($vremja_one && !empty($vremja_one)) {
+		$vremja_one = $vremja_one;
+	} else {
+		$vremja_one = array('');
+	}
+
+	if ($vremja_two && !empty($vremja_two)) {
+		$vremja_two = $vremja_two;
+	} else {
+		$vremja_two = array('');
+	}
+
+	if ($vremja_tree && !empty($vremja_tree)) {
+		$vremja_tree = $vremja_tree;
+	} else {
+		$vremja_tree = array('');
+	}
+
+	if ($title_img && !empty($title_img)) {
+		$title_img = $title_img;
+	} else {
+		$title_img = array('');
+	}
+
+	if ($repeatable_kartinki && !empty($repeatable_kartinki)) {
+		$repeatable_kartinki = $repeatable_kartinki;
+	} else {
+		$repeatable_kartinki = array('');
+	}
+
+	if ($ssilka_konez && !empty($ssilka_konez)) {
+		$ssilka_konez = $ssilka_konez;
+	} else {
+		$ssilka_konez = array('');
+	}
+
+
+	
+	for ($i = 0; $i < count($contents); $i++) { ?>
+
+
+
+
+<? if ( $nazva[$i] == '') {} else { ?>
+<div class="center-new-page">
+
+	<div class="center-new-page-method">
+		<div><?php echo $nazva[$i]; ?></div>
+		<div><?php echo $zena[$i]; ?></div>
+		<div><?php echo $contents[$i]; ?></div>
+		<a href="" class="zapisformtwo">Заказать консультацию</a>
+	</div>
+
+</div>
+<? } ?>
+
+
+<? if ($vremja_one[$i] == '') {} else { ?>
+<div class="center-new-page">
+
+	<div class="center-new-page-vremja">
+		<div>Время лечения</div>
+		<div class="vremja-wrap">
+			<div><?php echo $vremja_one[$i]; ?></div>
+			<div><?php echo $vremja_two[$i]; ?></div>
+			<div><?php echo $vremja_tree[$i]; ?></div>
+		</div>
+	</div>
+
+</div>
+<? } ?>
+
+
+<? if ($repeatable_kartinki[$i] == '') {} else { ?>
+<div class="center-new-page">
+
+	<div class="center-new-page-sluzaj">
+		<div><?php echo $title_img[$i]; ?></div>
+		<div class="center-new-page-slider"><?php echo do_shortcode($repeatable_kartinki[$i]); ?></div>
+		<a href="<?php echo $ssilka_konez[$i]; ?>">Подробнее о случае</a>
+	</div>
+
+</div>
+<? } ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<? /* ?>
+
+
+
+
+<div class="center-new-page">
+
+	<div class="center-new-page-method">
+		<div><? the_field('названия_блока_2'); ?></div>
+		<div><? the_field('цена_блока_2'); ?></div>
+		<div><? the_field('текст_блока_2'); ?></div>
+		<a href="" class="zapisformtwo">Заказать консультацию</a>
+	</div>
+
+</div>
+
+
+
+<div class="center-new-page">
+
+	<div class="center-new-page-vremja">
+		<div>Время лечения</div>
+		<div class="vremja-wrap">
+			<div><? the_field('время_1_2'); ?></div>
+			<div><? the_field('время_2_2'); ?></div>
+			<div><? the_field('время_3_2'); ?></div>
+		</div>
+	</div>
+
+</div>
+
+
+<div class="center-new-page">
+
+	<div class="center-new-page-sluzaj">
+		<div><? the_field('заголовок_картинок_2'); ?></div>
+		<div class="center-new-page-slider"><? the_field('картинки_2'); ?></div>
+		<a href="<? the_field('ссылка_подробнее_о_случае2'); ?>">Подробнее о случае</a>
+	</div>
+
+</div>
+
+<? */ ?>
+
+<?php }	?>
