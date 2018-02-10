@@ -1,0 +1,76 @@
+
+
+add_action('init', 'reviews_post_types');
+
+function reviews_post_types(){       
+    /**
+     * Создаем post_types
+    **/      
+    // параметры
+	$args = array(
+		'label'  => null,
+		'labels' => array(
+			'name'               => 'Отзывы', // основное название для типа записи
+			'singular_name'      => 'Отзывы', // название для одной записи этого типа
+			'add_new'            => 'Добавить Отзывы', // для добавления новой записи
+			'add_new_item'       => 'Добовить новый Отзывы', // заголовка у вновь создаваемой записи в админ-панели.
+			'edit_item'          => 'Изменить Отзывы', // для редактирования типа записи
+			'new_item'           => 'Добавить новый Отзывы', // текст новой записи
+			'view_item'          => 'Просмотреть Отзывы', // для просмотра записи этого типа.
+			'search_items'       => 'Поиск Отзывов', // для поиска по этим типам записи
+			'not_found'          => 'Ничего не найдено', // если в результате поиска ничего не было найдено
+			'not_found_in_trash' => 'Ничего не найдено', // если не было найдено в корзине
+			'menu_name'          => 'Отзывы', // название меню
+            'menu_icon'          => 'dashicons-book'
+		),
+ 	    'public' => true,
+		'supports' => array( 'title', 'editor', 'excerpt', 'thumbnail', 'comments', 'custom-fields', 'revisions', 'post-attributes' ),
+		'capability_type' => 'post',
+		'rewrite' => array("slug" => "reviews"), // Permalinks format
+        'hierarchical' => false,
+	);
+    // регистрация
+	register_post_type('reviews', $args );   
+    
+}
+
+// создаем произвольных taxonomy
+add_action( 'init', 'reviews_taxonomies', 0 );
+/**
+ * Функция создания произвольных taxonomy
+**/
+function reviews_taxonomies() {    
+    /**
+     * Создаем taxonomy
+    **/             
+      // параметры
+      $labels = array(
+		'name' =>'Рубрики',
+		'singular_name' => 'Новая рубрика',
+		'search_items' => 'Поиск рубрик',
+		'popular_items' => 'Популярные рубрики',
+		'all_items' => 'Все рубрики',
+		'parent_item' => 'Родительская рубрика',
+		'parent_item_colon' => 'Родительская:',
+		'edit_item' => 'Изменить рубрику',
+		'update_item' => 'Обновить рубрику',
+		'add_new_item' => 'Добавить новую рубрику',
+		'new_item_name' => 'Добавить рубрику',
+		'add_or_remove_items' => 'Добавление или удаление рубрик',
+		'menu_name' => 'Рубрики',
+      );   
+      // регистрация
+      register_taxonomy('reviews_category','reviews',array(
+		'labels' => $labels,
+		'public' => true,
+		'show_in_nav_menus' => true,
+		'show_ui' => true,
+		'show_tagcloud' => true,
+		'hierarchical' => true,
+		'rewrite' => array( 'slug' => 'reviews-category' ),
+		'query_var' => true
+      )); 
+      
+        
+                               
+}
