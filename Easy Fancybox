@@ -1,5 +1,7 @@
 Если не работает попап
 
+у ссылки class="gallery"   rel="gallery1"
+
 jQuery(document).ready(function() {
 	jQuery("a[rel='gallery1']").fancybox({padding : '0'});
 	jQuery("a[rel='gallery2']").fancybox({padding : '0'});
