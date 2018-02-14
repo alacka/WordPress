@@ -1,0 +1,16 @@
+function prefix_the_terms( $post_id, $taxonomy ) {
+	$term_ids = wp_get_post_terms( $post_id, $taxonomy, array(
+		'fields'  => 'ids',
+	) );
+	$terms = get_terms( $taxonomy, array(
+		'include'    => $term_ids,
+		'orderby'    => 'term_order',
+		'order'      => 'ASC',
+		'hide_empty' => false
+	) );
+	$links = array();
+	foreach ( $terms as $term ) {
+		echo '<option>' . $term->name . '</option>';
+	}
+	echo implode( '', $links );
+}
