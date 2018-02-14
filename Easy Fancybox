@@ -1,0 +1,9 @@
+Если не работает попап
+
+jQuery(document).ready(function() {
+	jQuery("a[rel='gallery1']").fancybox({padding : '0'});
+	jQuery("a[rel='gallery2']").fancybox({padding : '0'});
+	jQuery("a[rel='gallery3']").fancybox({padding : '0'});
+ });
+ 
+ 
