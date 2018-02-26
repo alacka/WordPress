@@ -1,0 +1,114 @@
+function repeatable_editor_get_meta( $value ) {
+    global $post;
+
+    $field = get_post_meta( $post->ID, $value, true );
+    if ( ! empty( $field ) ) {
+        return is_array( $field ) ? stripslashes_deep( $field ) : stripslashes( wp_kses_decode_entities( $field ) );
+    } else {
+        return false;
+    }
+}
+
+function repeatable_editor_add_meta_box() {
+    add_meta_box(
+        'repeatable_editor-repeatable-editor',
+        __( 'Таблица', 'repeatable_editor' ),
+        'repeatable_editor_repeatable_editor_html',
+        'post',
+        'normal',
+        'high'
+    );
+}
+add_action( 'add_meta_boxes', 'repeatable_editor_add_meta_box', 0 );
+
+function repeatable_editor_repeatable_editor_html( $post) {
+    wp_nonce_field( '_repeatable_editor_repeatable_editor_nonce', 'repeatable_editor_repeatable_editor_nonce' );
+
+    $contents = get_post_meta( $post->ID, 'repeatable_editor_repeatable_editor_content', true );
+    $nazva = get_post_meta( $post->ID, 'repeatable_editor_nazva', true );
+    $ssilka = get_post_meta( $post->ID, 'repeatable_editor_ssilka', true );
+
+    if ($contents && !empty($contents)) {
+        $contents = $contents;
+    } else {
+        $contents = array('');
+    }
+    if ($nazva && !empty($nazva)) {
+        $nazva = $nazva;
+    } else {
+        $nazva = array('');
+    }
+
+    for ($i = 0; $i < count($nazva); $i++) {
+        ?>
+
+<style>
+.content-row input {
+width:100%;
+}
+.content-row textarea {
+width: 100%;
+    height: 100px;
+}
+</style>
+
+<div class="content-row">
+            <p>
+            <div style="font-weight:bold; marign-bottom:10px;">Названия блока</div><br>
+            <input type="text" name="repeatable_editor_nazva[]" id="repeatable_editor_nazva_<?php echo $i; ?>" value="<?php echo $nazva[$i]; ?>">
+            </p>
+            <p>
+            <div style="font-weight:bold; marign-bottom:10px;">Ссылка</div><br>
+            <input type="text" name="repeatable_editor_ssilka[]" id="repeatable_editor_ssilka_<?php echo $i; ?>" value="<?php echo $ssilka[$i]; ?>">
+            </p>
+            <a class="content-delete" href="#" style="color:#a00;float:right;text-decoration:none">Удалить</a><br style="clear:both">
+        </div>
+<hr>
+        <?php
+    }
+    ?>
+    <p><a class="button" href="#" id="add_content">Добавить</a></p>
+    <script>
+        var startingContent = <?php echo count($contents) - 1; ?>;
+        jQuery('#add_content').click(function(e) {
+            e.preventDefault();
+            startingContent++;
+            var contentID = 'repeatable_editor_repeatable_editor_content_' + startingContent,
+                contentRow = '<p><div style="font-weight:bold; marign-bottom:10px;">Названия блока</div><br><input type="text" name="repeatable_editor_nazva[]"></p><p><div style="font-weight:bold; marign-bottom:10px;">Ссылка</div><br><input type="text" name="repeatable_editor_ssilka[]"></p>';
+
+            jQuery('.content-row').eq(jQuery('.content-row').length - 1).after(contentRow);
+            tinymce.init({ selector: '#' + contentID });
+        });
+        jQuery(document).on('click', '.content-delete', function() {
+            if (
+                jQuery('.content-row').length > 1 &&
+                confirm('Are you sure you want to delete this content?')
+            ) {
+                jQuery(this).parent().remove();
+            }
+        });
+    </script>
+    <?php
+}
+
+function repeatable_editor_repeatable_editor_save( $post_id ) {
+    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
+    if ( ! isset( $_POST['repeatable_editor_repeatable_editor_nonce'] ) || ! wp_verify_nonce( $_POST['repeatable_editor_repeatable_editor_nonce'], '_repeatable_editor_repeatable_editor_nonce' ) ) return;
+    if ( ! current_user_can( 'edit_post' ) ) return;
+
+    if ( isset( $_POST['repeatable_editor_repeatable_editor_content'] ) ) {
+        $contents = $_POST['repeatable_editor_repeatable_editor_content'];
+        update_post_meta( $post_id, 'repeatable_editor_repeatable_editor_content', $contents );
+    }
+
+    if ( isset( $_POST['repeatable_editor_nazva'] ) ) {
+        $contents = $_POST['repeatable_editor_nazva'];
+        update_post_meta( $post_id, 'repeatable_editor_nazva', $contents );
+    }
+    if ( isset( $_POST['repeatable_editor_ssilka'] ) ) {
+        $contents = $_POST['repeatable_editor_ssilka'];
+        update_post_meta( $post_id, 'repeatable_editor_ssilka', $contents );
+    }
+
+}
+add_action( 'save_post', 'repeatable_editor_repeatable_editor_save' );
