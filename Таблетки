@@ -112,3 +112,27 @@ function repeatable_editor_repeatable_editor_save( $post_id ) {
 
 }
 add_action( 'save_post', 'repeatable_editor_repeatable_editor_save' );
+
+
+
+
+
+/************************************************
+
+
+
+<?php global $post;
+$nazva = get_post_meta( $post->ID, 'repeatable_editor_nazva', true );
+if ($nazva && !empty($nazva)) { $nazva = $nazva; } else { $nazva = array(''); } 
+for ($i = 0; $i < count($nazva); $i++) { ?>
+<input id="tab<?php echo $i; ?>" type="radio" name="tabs" checked>
+<label for="tab<?php echo $i; ?>"><?php echo $nazva[$i]; ?></label>
+<?php } ?>
+
+<?php global $post; $ssilka = get_post_meta( $post->ID, 'repeatable_editor_ssilka', true );
+if ($ssilka && !empty($ssilka)) { $ssilka = $ssilka; } else { $ssilka = array(''); } 
+for ($i = 0; $i < count($ssilka); $i++) { ?>
+<section id="content<?php echo $i; ?>">
+    <script src="https://www.pharmacycharts.com/js/<?php echo $ssilka[$i]; ?>"></script>
+</section>
+<?php }  ?>
