@@ -1,0 +1,16 @@
+/*
+Theme Name: Custom Vova
+Template: royale-news
+*/
+@import url("../royale-news/style.css");
+
+
+
+
+функшен
+
+<? 
+require_once( get_stylesheet_directory() . '/royalethemes/hooks.php' );
+?>
+
+подключить файл
