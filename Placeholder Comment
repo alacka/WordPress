@@ -1,0 +1,42 @@
+
+add_filter( 'comment_form_default_fields', 'wpse_62742_comment_placeholders' );
+
+/**
+ * Change default fields, add placeholder and change type attributes.
+ *
+ * @param  array $fields
+ * @return array
+ */
+function wpse_62742_comment_placeholders( $fields )
+{
+    $fields['author'] = str_replace(
+        '<input',
+        '<input placeholder="'
+        /* Replace 'theme_text_domain' with your theme’s text domain.
+         * I use _x() here to make your translators life easier. :)
+         * See http://codex.wordpress.org/Function_Reference/_x
+         */
+            . _x(
+                'Имя',
+                'comment form placeholder',
+                'theme_text_domain'
+                )
+            . '"',
+        $fields['author']
+    );
+    $fields['email'] = str_replace(
+        '<input id="email" name="email" type="text"',
+        /* We use a proper type attribute to make use of the browser’s
+         * validation, and to get the matching keyboard on smartphones.
+         */
+        '<input type="email" placeholder="E-mail"  id="email" name="email"',
+        $fields['email']
+    );
+    $fields['url'] = str_replace(
+        '<input id="url" name="url" type="text"',
+        // Again: a better 'type' attribute value.
+        '<input placeholder="URL" id="url" name="url" type="url"',
+        $fields['url']
+    );
+    return $fields;
+}
