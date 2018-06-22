@@ -1,0 +1,20 @@
+function repeatable_editor_add_meta_box() {
+    global $post;
+    if(!empty($post))
+    {
+        $pageTemplate = get_post_meta($post->ID, '_wp_page_template', true);
+
+        if($pageTemplate == 'template/podderzka-bukleti.php' )
+        {
+             add_meta_box(
+        'repeatable_editor-repeatable-editor',
+        __( 'Буклеты', 'repeatable_editor' ),
+        'repeatable_editor_repeatable_editor_html',
+        'page',
+        'normal',
+        'high'
+    );
+        }
+    }
+}
+add_action( 'add_meta_boxes', 'repeatable_editor_add_meta_box', 0 );
