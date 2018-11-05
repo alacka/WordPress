@@ -1,3 +1,10 @@
+Вивод - <?php echo dvt_get_images_post( $post_ID, 'thumb-67', 'thumb-425' ); ?>
+
+
+
+
+
+
 
 add_action( 'add_meta_boxes', 'add_dvt_upload_meta_box' );  
 	
