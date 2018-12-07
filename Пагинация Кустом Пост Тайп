@@ -1,0 +1,33 @@
+***** пересохранять произвольніе ссилки постояно *****
+
+<?php $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+$args = array( 'post_type' => 'portfolio', 'posts_per_page' => 1, 'paged' => $paged );
+$wp_query = new WP_Query($args);
+while ( have_posts() ) : the_post(); ?>
+     ******цикл
+<?php endwhile; ?>
+
+
+
+<?php wp_pagenavi(); ?>
+
+
+
+archive-portfolio.php
+
+
+
+
+add_action( 'init', 'create_post_type' );
+function create_post_type() {
+    register_post_type( 'portfolio',
+        array(
+            'labels' => array(
+                'name' => __( 'Portfolio' ),
+                'singular_name' => __( 'Portfolio' )
+            ),
+        'public' => true,
+        'has_archive' => true,
+        )
+    );
+}
