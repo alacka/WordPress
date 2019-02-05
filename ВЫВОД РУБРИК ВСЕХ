@@ -1,0 +1,39 @@
+<?php 
+$this_category = get_queried_object();
+    //echo $this_category->cat_ID;
+    $parent_term_id =$this_category->term_id; // term id of parent term
+    $taxon =$this_category->taxonomy;
+
+//$termchildren = get_terms('category',array('child_of' => $parent_id));
+$taxonomies = array( 
+    'taxonomy' => $taxon
+);
+
+$args = array(
+   // 'parent'         => $parent_term_id,
+     'child_of'      => $parent_term_id
+); 
+
+$terms = get_terms($taxonomies, $args);
+if (sizeof($terms)>0)
+{
+?>
+<div class="jblock">
+<?
+foreach ( $terms as $term ) { ?>
+
+
+
+ЗДЕСЬ КОД
+
+
+
+<? } ?>
+
+</div>
+
+<div style="clear:both;">
+<?php echo term_description(); ?>
+</div>
+
+<? } else { } ?>
