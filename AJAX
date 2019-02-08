@@ -1,0 +1,83 @@
+JS
+
+/********** Вариант 1
+
+jQuery('#country-select').on('click', function(){
+        var service = $('.countdiv').attr('val');
+
+        $.ajax({
+            type: "POST",
+            url: window.wp_data.ajax_url, //адрес из глобальной переменной
+            data : {
+                action : 'get_projects', //название нашего обработчика, который создадим поже
+                service_id : service, //id услуги из списка услуг
+                country_id : country //id страны
+            },
+            success: function (data) {
+                jQuery('.tablefrontpage').html(data); 
+            }
+        });
+});
+
+
+/********** Вариант 2
+
+function ajaxsend() { 
+
+jQuery('.wp-pagenavi a, .wp-pagenavi .current').on('click', function(event){
+        event.preventDefault();
+
+        var pages = $(this).html();
+
+        $.ajax({
+            type: "POST",
+            url: window.wp_data.ajax_url,
+            data : {
+                action : 'get_projects',
+                pages : pages, // так передается переменная
+            },
+            success: function (data) {
+                jQuery('.tablefrontpage').html(data);
+                ajaxsend();
+
+            }
+        });
+
+});
+
+
+}
+
+ajaxsend();
+
+
+
+********************************************************************************************************************************************
+
+
+
+Функшен
+
+
+
+function js_variables(){
+    $variables = array (
+        'ajax_url' => admin_url('admin-ajax.php'),
+    );
+    echo '<script type="text/javascript">window.wp_data = ' . json_encode($variables) . ';</script>';
+}
+add_action('wp_head','js_variables');
+
+
+
+
+
+
+function my_action_callback() {
+    get_template_part( 'template-parts/content', get_post_format() );
+    // выше сам вивод новостей
+    wp_die();
+}
+ 
+add_action('wp_ajax_get_projects', 'my_action_callback');
+add_action('wp_ajax_nopriv_get_projects', 'my_action_callback');
