@@ -1,0 +1,19 @@
+<? $queried_object = get_queried_object(); 
+$taxonomy = $queried_object->taxonomy;
+$term_id = $queried_object->term_id; if ( get_field('заголовок', $taxonomy . '_' . $term_id) == '' ) { ?>
+    <title><?php if( get_post_meta($post->ID, 'title', true) == '' ) { the_title(); } else { echo get_post_meta($post->ID, 'title', true); } ?></title>
+<? } else { ?>
+	<title><?php the_field('заголовок', $taxonomy . '_' . $term_id) ?></title>
+<? } ?>
+	
+	<? if ( get_field('описание', $taxonomy . '_' . $term_id) == '' ) { ?>
+    <? if ( get_post_meta($post->ID, 'desc', true) == '' ) {} else { ?><meta name="description" content="<? echo get_post_meta($post->ID, 'desc', true); ?>"/><? } ?>
+	<? } else { ?>
+		<meta name="description" content="<? the_field('описание', $taxonomy . '_' . $term_id) ?>"/>
+	<? } ?>
+	
+	<? if ( get_field('ключи', $taxonomy . '_' . $term_id) == '' ) { ?>
+    <? if ( get_post_meta($post->ID, 'key', true) == '' ) {} else { ?><meta name="keywords" content="<? echo get_post_meta($post->ID, 'key', true); ?>"/><? } ?>
+	<? } else { ?>
+		<meta name="keywords" content="<? the_field('ключи', $taxonomy . '_' . $term_id) ?>"/>
+	<? } ?>
