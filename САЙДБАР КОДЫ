@@ -7,3 +7,39 @@ if ( function_exists('register_sidebar') )
 	if ( function_exists('dynamic_sidebar') )
 		dynamic_sidebar('right-sidebar');
 ?>
+
+
+
+/***********************************************************/
+
+
+add_action( 'after_setup_theme', 'theme_register_nav_strany' );
+function theme_register_nav_strany() {
+    register_nav_menu( 'strany', 'Страны' );
+}
+
+
+<?
+wp_nav_menu( array(
+'theme_location'  => 'sidebar',
+'menu'            => 'sidebar', 
+'container'       => '', 
+'container_class' => '', 
+'container_id'    => '',
+'menu_class'      => 'sidebar', 
+'menu_id'         => '',
+'echo'            => true,
+'fallback_cb'     => 'sidebar',
+'before'          => '',
+'after'           => '',
+'link_before'     => '',
+'link_after'      => '',
+'items_wrap'      => '%3$s',
+'depth'           => 0
+) );
+?>
+
+
+/***********************************************************/
+// Добавить миниатюры
+add_theme_support( 'post-thumbnails' );
