@@ -10,14 +10,18 @@ function repeatable_editor_get_meta( $value ) {
 }
 
 function repeatable_editor_add_meta_box() {
-    add_meta_box(
-        'repeatable_editor-repeatable-editor',
-        __( 'Таблица', 'repeatable_editor' ),
-        'repeatable_editor_repeatable_editor_html',
-        'post',
-        'normal',
-        'high'
-    );
+global $post;
+        $pageTemplate = get_post_meta($post->ID, '_wp_page_template', true);
+        if($pageTemplate == 'templates/svedinja.php' )
+        {
+            add_meta_box(
+                'repeatable_editor-repeatable-editor', // $id
+                'Табы', // $title
+                'repeatable_editor_repeatable_editor_html', // $callback
+                'page', // $page
+                'normal', // $context
+                'high'); // $priority'
+        }
 }
 add_action( 'add_meta_boxes', 'repeatable_editor_add_meta_box', 0 );
 
