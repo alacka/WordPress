@@ -8,18 +8,15 @@
  */
  
 
-/* Добавить перед заголовком, заменить НОРМАЛ  - ai_after_title */
+/* Добавить перед заголовком, заменить НОРМАЛ  - newplace */
 function ai_edit_form_after_title() {
 	// get globals vars
 	global $post, $wp_meta_boxes;
 
-	// render the FM meta box in 'ai_after_title' context
-	do_meta_boxes( get_current_screen(), 'ai_after_title', $post );
-
-	// unset 'ai_after_title' context from the post's meta boxes
-	unset( $wp_meta_boxes['post']['ai_after_title'] );
+	do_meta_boxes( get_current_screen(), 'newplace', $post );
+	unset( $wp_meta_boxes['post']['newplace'] );
 }
-add_action( 'edit_form_after_title', 'ai_edit_form_after_title' );
+add_action( 'edit_form_after_title', 'ai_edit_form_after_title' );   /* edit_form_after_editor - после контента,  edit_form_after_title - перед контентом*/
 
 
 
