@@ -6,7 +6,7 @@
  * Author:      brasofilo
  * License:     GPLv3
  */
-
+add_filter( 'something', 'add_post_gallery_so_14445904' ); /* защита ошибки */
 add_action( 'admin_init', 'add_post_gallery_so_14445904' );
 add_action( 'add_meta_boxes_page', 'add_page_gallery_so_14445904' );
 add_action( 'admin_head-post.php', 'print_scripts_so_14445904' );
