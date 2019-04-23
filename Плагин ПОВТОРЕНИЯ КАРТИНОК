@@ -6,6 +6,24 @@
  * Author:      brasofilo
  * License:     GPLv3
  */
+ 
+
+/* Добавить перед заголовком, заменить НОРМАЛ  - ai_after_title */
+function ai_edit_form_after_title() {
+	// get globals vars
+	global $post, $wp_meta_boxes;
+
+	// render the FM meta box in 'ai_after_title' context
+	do_meta_boxes( get_current_screen(), 'ai_after_title', $post );
+
+	// unset 'ai_after_title' context from the post's meta boxes
+	unset( $wp_meta_boxes['post']['ai_after_title'] );
+}
+add_action( 'edit_form_after_title', 'ai_edit_form_after_title' );
+
+
+
+
 add_filter( 'something', 'add_post_gallery_so_14445904' ); /* защита ошибки */
 add_action( 'admin_init', 'add_post_gallery_so_14445904' );
 add_action( 'add_meta_boxes_page', 'add_page_gallery_so_14445904' );
@@ -32,8 +50,7 @@ function add_post_gallery_so_14445904()
 		'Slideshow Gallery',
 		'post_gallery_options_so_14445904',
 		$rep_fields_posts,
-		'normal',
-		'core'
+		'normal'
 	);
 }
 
@@ -47,8 +64,7 @@ function add_page_gallery_so_14445904()
 			'Slideshow Gallery',
 			'post_gallery_options_so_14445904',
 			'page',
-			'normal',
-			'core'
+			'normal'
 		);
 	}
 }
