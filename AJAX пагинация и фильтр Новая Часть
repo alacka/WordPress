@@ -1,3 +1,39 @@
+
+$meta_query = array('relation' => 'AND');
+
+
+
+if ( $_POST['curtax'] == 'pamyatniki' ) {
+
+if(isset($_POST['budgetary'])&&$_POST['budgetary']!=""){
+    $meta_query[] = array(
+        'key'       => 'monuments_checkboxs',
+        'value'     => 'budgetary',
+        'compare' => 'LIKE',
+    );
+} 
+
+
+
+
+
+$paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
+$args = array(
+    'posts_per_page' => 16,
+    'post_type' => 'catalog',
+    'paged'         => $pages,
+    'tax_query' => $tax_query,
+    'meta_query' => $meta_query,
+
+);
+
+
+
+
+/****************************************************************************************
+
+
+
 jQuery(".controls").change(function() {
 
 
