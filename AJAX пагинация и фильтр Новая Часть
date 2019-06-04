@@ -1,0 +1,271 @@
+jQuery(".controls").change(function() {
+
+
+        jQuery('.tablefrontpage').animate({opacity: .3});
+
+
+        var taxonomyslug = $('.tablefrontpage').attr('taxonomyslug');
+
+        var curtax = $('.controls').attr('curtax');
+
+
+
+
+        if( $(".selectcolor").val() == '' ) {} else {
+        	var selectcolor = $(".selectcolor").val();
+    	}
+        if( $('.budgetary').is(':checked') ) {
+        	var budgetary = $(".budgetary").attr('value');
+    	}
+    	if( $('.fortwoormore').is(':checked') ) {
+	        var fortwoormore = $(".fortwoormore").attr('value');
+    	}
+        if( $('.exclusive').is(':checked') ) {
+        	var exclusive = $(".exclusive").attr('value');
+    	}
+
+    	if( $('.granite').is(':checked') ) {
+        	var granite = $(".granite").attr('value');
+    	}
+    	if( $('.oftiles').is(':checked') ) {
+        	var oftiles = $(".oftiles").attr('value');
+    	}
+    	if( $('.vasi').is(':checked') ) {
+        	var vasi = $(".vasi").attr('value');
+    	}
+    	if( $('.lampadi').is(':checked') ) {
+        	var lampadi = $(".lampadi").attr('value');
+    	}
+    	if( $('.column').is(':checked') ) {
+        	var column = $(".column").attr('value');
+    	}
+    	if( $('.sculptures').is(':checked') ) {
+        	var sculptures = $(".sculptures").attr('value');
+    	}
+    	if( $('.stoli').is(':checked') ) {
+        	var stoli = $(".stoli").attr('value');
+    	}
+    	if( $('.skameiki').is(':checked') ) {
+        	var skameiki = $(".skameiki").attr('value');
+    	}
+
+
+    	if( $('.gravestones').is(':checked') ) {
+        	var gravestones = $(".gravestones").attr('value');
+    	}
+    	if( $('.fences').is(':checked') ) {
+        	var fences = $(".fences").attr('value');
+    	}
+    	if( $('.curbs').is(':checked') ) {
+        	var curbs = $(".curbs").attr('value');
+    	}
+    	if( $('.metalceramics').is(':checked') ) {
+        	var metalceramics = $(".metalceramics").attr('value');
+    	}
+    	if( $('.graniteinserts').is(':checked') ) {
+        	var graniteinserts = $(".graniteinserts").attr('value');
+    	}
+
+
+    	if( $('.religious').is(':checked') ) {
+        	var religious = $(".religious").attr('value');
+    	}
+    	if( $('.flowers').is(':checked') ) {
+        	var flowers = $(".flowers").attr('value');
+    	}
+    	if( $('.candles').is(':checked') ) {
+        	var candles = $(".candles").attr('value');
+    	}
+    	if( $('.thematic').is(':checked') ) {
+        	var thematic = $(".thematic").attr('value');
+    	}
+    	if( $('.backgrounds').is(':checked') ) {
+        	var backgrounds = $(".backgrounds").attr('value');
+    	}
+    	if( $('.fonts').is(':checked') ) {
+        	var fonts = $(".fonts").attr('value');
+    	}
+
+
+
+        $.ajax({
+            type: "POST",
+            url: window.wp_data.ajax_url, //адрес из глобальной переменной
+            data : {
+                action : 'get_projects',
+                pages : '1',
+                taxonomyslug : taxonomyslug,
+                budgetary : budgetary,
+                fortwoormore : fortwoormore,
+                exclusive : exclusive,
+                selectcolor : selectcolor,
+                granite : granite,
+				oftiles : oftiles,
+				vasi : vasi,
+				lampadi : lampadi,
+				column : column,
+				sculptures : sculptures,
+				stoli : stoli,
+				skameiki : skameiki,
+				gravestones : gravestones,
+				fences : fences,
+				curbs : curbs,
+				metalceramics : metalceramics,
+				graniteinserts : graniteinserts,
+				religious : religious,
+				flowers : flowers,
+				candles : candles,
+				thematic : thematic,
+				backgrounds : backgrounds,
+				fonts : fonts,
+				curtax : curtax,
+            },
+            success: function (data) {
+                jQuery('.tablefrontpage').html(data); 
+                jQuery('.tablefrontpage').animate({opacity: 1});
+                ajaxsend();
+            }
+        });
+
+
+
+});
+
+
+
+
+
+
+function ajaxsend() { 
+
+jQuery('.wp-pagenavi a').on('click', function(event){
+        event.preventDefault();
+
+        var taxonomyslug = $('.tablefrontpage').attr('taxonomyslug');
+
+        var curtax = $('.controls').attr('curtax');
+
+        jQuery('.tablefrontpage').animate({opacity: .3});
+
+        if( $(".selectcolor").val() == '' ) {} else {
+        	var selectcolor = $(".selectcolor").val();
+    	}
+        if( $('.budgetary').is(':checked') ) {
+        	var budgetary = $(".budgetary").attr('value');
+    	}
+    	if( $('.fortwoormore').is(':checked') ) {
+	        var fortwoormore = $(".fortwoormore").attr('value');
+    	}
+        if( $('.exclusive').is(':checked') ) {
+        	var exclusive = $(".exclusive").attr('value');
+    	}
+
+    	if( $('.granite').is(':checked') ) {
+        	var granite = $(".granite").attr('value');
+    	}
+    	if( $('.oftiles').is(':checked') ) {
+        	var oftiles = $(".oftiles").attr('value');
+    	}
+    	if( $('.vasi').is(':checked') ) {
+        	var vasi = $(".vasi").attr('value');
+    	}
+    	if( $('.lampadi').is(':checked') ) {
+        	var lampadi = $(".lampadi").attr('value');
+    	}
+    	if( $('.column').is(':checked') ) {
+        	var column = $(".column").attr('value');
+    	}
+    	if( $('.sculptures').is(':checked') ) {
+        	var sculptures = $(".sculptures").attr('value');
+    	}
+    	if( $('.stoli').is(':checked') ) {
+        	var stoli = $(".stoli").attr('value');
+    	}
+    	if( $('.skameiki').is(':checked') ) {
+        	var skameiki = $(".skameiki").attr('value');
+    	}
+
+
+    	if( $('.gravestones').is(':checked') ) {
+        	var gravestones = $(".gravestones").attr('value');
+    	}
+    	if( $('.fences').is(':checked') ) {
+        	var fences = $(".fences").attr('value');
+    	}
+    	if( $('.curbs').is(':checked') ) {
+        	var curbs = $(".curbs").attr('value');
+    	}
+    	if( $('.metalceramics').is(':checked') ) {
+        	var metalceramics = $(".metalceramics").attr('value');
+    	}
+    	if( $('.graniteinserts').is(':checked') ) {
+        	var graniteinserts = $(".graniteinserts").attr('value');
+    	}
+
+
+    	if( $('.religious').is(':checked') ) {
+        	var religious = $(".religious").attr('value');
+    	}
+    	if( $('.flowers').is(':checked') ) {
+        	var flowers = $(".flowers").attr('value');
+    	}
+    	if( $('.candles').is(':checked') ) {
+        	var candles = $(".candles").attr('value');
+    	}
+    	if( $('.thematic').is(':checked') ) {
+        	var thematic = $(".thematic").attr('value');
+    	}
+    	if( $('.backgrounds').is(':checked') ) {
+        	var backgrounds = $(".backgrounds").attr('value');
+    	}
+    	if( $('.fonts').is(':checked') ) {
+        	var fonts = $(".fonts").attr('value');
+    	}
+
+        var pages = $(this).html(); /* Берет только число страницы текущей по которой клик */
+
+        $.ajax({
+            type: "POST",
+            url: window.wp_data.ajax_url, //адрес из глобальной переменной
+            data : {
+                action : 'get_projects',
+                pages : pages,
+                taxonomyslug : taxonomyslug,
+                budgetary : budgetary,
+                fortwoormore : fortwoormore,
+                exclusive : exclusive,
+                selectcolor : selectcolor,
+                granite : granite,
+				oftiles : oftiles,
+				vasi : vasi,
+				lampadi : lampadi,
+				column : column,
+				sculptures : sculptures,
+				stoli : stoli,
+				skameiki : skameiki,
+				gravestones : gravestones,
+				fences : fences,
+				curbs : curbs,
+				metalceramics : metalceramics,
+				graniteinserts : graniteinserts,
+				religious : religious,
+				flowers : flowers,
+				candles : candles,
+				thematic : thematic,
+				backgrounds : backgrounds,
+				fonts : fonts,
+				curtax : curtax,
+            },
+            success: function (data) {
+                jQuery('.tablefrontpage').html(data); 
+                jQuery('.tablefrontpage').animate({opacity: 1});
+                ajaxsend();
+            }
+        });
+
+});
+
+
+}
+
+ajaxsend();
