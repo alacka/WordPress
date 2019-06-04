@@ -259,6 +259,15 @@ jQuery('.wp-pagenavi a').on('click', function(event){
     	}
 
         var pages = $(this).html(); /* Берет только число страницы текущей по которой клик */
+	
+	if ( $(this).html() == '»' ) {
+          var pages = parseInt($('.wp-pagenavi span.current').html(),10);;
+          pages += 1;
+        }
+        if ( $(this).html() == '«' ) {
+          var pages = parseInt($('.wp-pagenavi span.current').html(),10);;
+          pages -= 1;
+        }
 
         $.ajax({
             type: "POST",
