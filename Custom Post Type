@@ -26,6 +26,8 @@ function video_post_types(){
 		'capability_type' => 'post',
 		'rewrite' => array("slug" => "video"), // Permalinks format
         'hierarchical' => false,
+	'menu_position'       => 5,
+            'menu_icon'           => 'dashicons-book',
 	);
     // регистрация
 	register_post_type('video', $args );   
