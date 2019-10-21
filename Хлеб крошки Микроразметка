@@ -1,0 +1,51 @@
+<?php
+function get_breadcrumbs() {
+    $breadcrumbs = array();
+    $category_count = 0;
+    $parent_arrive = 0;
+    if (is_single()) {
+        $post_data = get_queried_object();
+        $breadcrumbs[$category_count]['id'] = $post_data->ID;
+        $breadcrumbs[$category_count]['name'] = $post_data->post_title;
+        $category_count++;
+        $current_category = get_the_category();
+        $current_category_id = $current_category[0]->term_id;
+        $category = get_category($current_category_id);
+    } else {
+        $category = get_category(get_query_var('cat'));
+    }
+    $breadcrumbs[$category_count]['id'] = $category->term_id;
+    $breadcrumbs[$category_count]['name'] = $category->name;
+    $category_count++;
+    while( $parent_arrive == 0 ) {
+        if ($category->category_parent == 0) {
+          $parent_arrive = 1;
+        } else {
+          $breadcrumbs[$category_count]['id'] = $category->category_parent;
+          $category = get_category($category->category_parent);
+          $breadcrumbs[$category_count]['name'] = $category->name;
+        }
+      $category_count++;
+    }
+    $breadcrumbs = array_reverse($breadcrumbs);
+    return $breadcrumbs;
+}
+?>
+
+<?php $breadcrumbs = get_breadcrumbs(); ?>
+<ol itemscope itemtype="http://schema.org/BreadcrumbList">
+	  <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="<?php echo site_url(); ?>">
+        <span itemprop="name">Home</span>
+      </a>
+		  <meta itemprop="position" content="1" />
+		</li>
+    <?php foreach ($breadcrumbs as $breadcrumb_index => $breadcrumb) { ?>
+      <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+        <a itemprop="item" href="<?php echo get_category_link($breadcrumb['id']); ?>">
+          <span itemprop="name"><?php echo $breadcrumb['name']; ?></span>
+        </a>
+        <meta itemprop="position" content="<?php echo $breadcrumb_index + 2; ?>" />
+      </li>  
+    <?php } ?>
+</ol>
