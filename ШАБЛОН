@@ -1,0 +1,11 @@
+
+
+<?php while ( have_posts() ) : the_post(); ?>
+
+						<? $image_url = wp_get_attachment_image_src( get_post_thumbnail_id(), 'full');  ?>
+						<img src="<?php echo $image_url[0]; ?>" alt="seo">
+
+						<a href="<? the_permalink(); ?>"><? the_title(); ?></a>
+						<p class="post__text"><? echo get_the_excerpt(); ?></p>
+
+<?php endwhile; ?>
