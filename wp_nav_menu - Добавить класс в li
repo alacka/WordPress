@@ -1,0 +1,7 @@
+function atg_menu_classes($classes, $item, $args) {
+  if($args->theme_location == 'topverx') {
+    $classes[] = 'btn_football se19-main-nav__list-item';
+  }
+  return $classes;
+}
+add_filter('nav_menu_css_class', 'atg_menu_classes', 1, 3);
