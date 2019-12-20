@@ -1,0 +1,12 @@
+//To retrieve current category id dynamically
+$current_cat = get_the_category();
+$cat_ID = $current_cat[0]->cat_ID;
+
+$loop = new WP_Query(array(
+    'offset' => 4,         //Set your offset
+    'cat' => $cat_ID,      //The category id
+));
+
+if ( $loop->have_posts() ) : while ( $loop->have_posts() ) : $loop->the_post(); 
+// output posts
+endwhile; endif;
