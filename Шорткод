@@ -1,7 +1,16 @@
 function shortcode_mit_standardwert($atts)
 {
 
-ob_start(); /* начало */ ?>
+ob_start(); /* начало */ 
+
+/* по умолчанию */
+$params = shortcode_atts( array(
+		'anchor' => 'Миша Рудрастых'
+	), $atts );
+  
+?>
+  
+  
 
 <div class="row">
 <?
@@ -27,3 +36,4 @@ add_shortcode( 'catlist', 'shortcode_mit_standardwert' );
 
 
 [catlist]
+[catlist anchor="текст ссылки"]
