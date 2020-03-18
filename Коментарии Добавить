@@ -1,0 +1,212 @@
+<div class="page-left-col">
+		<? while ( have_posts() ):the_post();
+			$bk_logo_att   = carbon_get_post_meta( get_the_ID(), 'img_png' );
+			$bk_logo_arc   = wp_get_attachment_url( $bk_logo_att );
+			$plus          = carbon_get_post_meta( get_the_ID(), 'tab1' );
+			$bonus         = carbon_get_post_meta( get_the_ID(), 'bonus' );
+			$bonus_sum     = carbon_get_post_meta( get_the_ID(), 'bonus_sum' );
+			$ref           = carbon_get_post_meta( get_the_ID(), 'ref' );
+			$gen_info      = carbon_get_post_meta( get_the_ID(), 'gen_info' );
+			$back_long_att = carbon_get_post_meta( get_the_ID(), 'intro_long' );
+			$back_long_arc = wp_get_attachment_url( $back_long_att );
+			if ( ! $back_long_arc ) {
+				$back_long_att = carbon_get_theme_option( 'intro_long_all' );
+				$back_long_arc = wp_get_attachment_url( $back_long_att );
+			}
+			?>
+            <div class="company-page">
+                <h1><? echo get_the_title(); ?></h1>
+                <div class="top-info" style="background: url('<? echo $back_long_arc; ?>') center / cover;">
+                    <div class="logo">
+                        <img src="<? echo $bk_logo_arc; ?>">
+                    </div>
+                    <ul>
+						<? foreach ( $plus as $item ) :
+							$p = $item['plus']; ?>
+                            <li><? echo $p; ?></li>
+						<? endforeach; ?>
+                    </ul>
+                    <div class="bon">
+						<? echo $bonus; ?>
+                        <span><? echo $bonus_sum; ?></span>
+                        <a href="<? echo $ref; ?>">ПЕРЕЙТИ НА САЙТ</a>
+                    </div>
+                </div>
+				<? if ( $gen_info ): ?>
+                    <div class="main-info">
+                        <p>Основная информация</p>
+                        <table>
+                            <tbody>
+							<? foreach ( $gen_info as $item ) :
+								$p = $item['title'];
+								$d = $item['desc'];
+								?>
+                                <tr>
+                                    <td><? echo $p; ?></td>
+                                    <td><? echo $d; ?></td>
+                                </tr>
+							<? endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+				<? endif; ?>
+            </div>
+            <div class="text-page">
+				<? the_content();
+				$post_id = get_the_ID();
+				?>
+            </div>
+			<?
+			$per_page = 99;
+			$total    = wp_count_comments( $post_id )->approved;
+			$pages    = ceil( $total / $per_page );
+			$comments = get_comments( array(
+				'post_id' => $post_id,
+				'number'  => $per_page,
+				'status'  => 'approve'
+			) );
+			if ( $comments ):
+				?>
+                <div class="comments">
+                    <h2>Отзывы игроков о БК <? echo get_the_title( $post_id ); ?></h2>
+					<?
+					foreach ( $comments as $comment ) :
+						$plus = carbon_get_comment_meta( $comment->comment_ID, 'plus' );
+						$minus = carbon_get_comment_meta( $comment->comment_ID, 'minus' );
+						$rating = carbon_get_comment_meta( $comment->comment_ID, 'rating' );
+						?>
+                        <div class="item">
+                            <div class="author">
+                                <img src="<? echo get_template_directory_uri() ?>/assets/img/avatar.png">
+								<? echo $comment->comment_author ?>
+                            </div>
+                            <div class="date">
+                                Опубликовано <? echo date( 'd F', strtotime( $comment->comment_date ) ); ?></div>
+							<? echo draw_rating( $rating ); ?>
+                            <div class="plus">
+								<? echo $plus; ?>
+                            </div>
+                            <div class="minus">
+								<? echo $minus; ?>
+                            </div>
+                        </div>
+					<? endforeach; ?>
+                </div>
+			<? endif; ?>
+            <div class="comments-form bk">
+                <script type="application/javascript">
+                    var ajaxurl = '<?php echo site_url() ?>/wp-admin/admin-ajax.php';
+                    var post_id = <? echo $post_id;  ?>;
+                </script>
+                <h2>Оцените БК <? echo get_the_title( $post_id ); ?></h2>
+                <div class="set_rating">
+                    <label data-note="5">
+                        <input type="radio" name="rating" value="5" title="5 stars"> 5
+                    </label>
+                    <label data-note="4">
+                        <input type="radio" name="rating" value="4" title="4 stars"> 4
+                    </label>
+                    <label data-note="3">
+                        <input type="radio" name="rating" value="3" title="3 stars"> 3
+                    </label>
+                    <label data-note="2">
+                        <input type="radio" name="rating" value="2" title="2 stars"> 2
+                    </label>
+                    <label data-note="1">
+                        <input type="radio" name="rating" value="1" title="1 star"> 1
+                    </label>
+                </div>
+                <div class="flex">
+                    <input type="text" placeholder="Ваше имя" class="review-name">
+                    <input type="text" placeholder="Ваш e-mail" class="review-email">
+                </div>
+                <textarea placeholder="Преимущества БК" class="plus1"></textarea>
+                <textarea placeholder="Недостатки БК" class="minus1"></textarea>
+                <div class="agree" style="padding-bottom: 20px;">
+                    <input type="checkbox" id="ch2">
+                    <label for="ch1">
+                        Нажимая кнопку “Опубликовать отзыв", Вы даете согласие на обработку <a href="#">персональных
+                            данных</a>
+                    </label>
+                </div>
+                <div class="g-recaptcha" data-sitekey="6LfiKeIUAAAAAJ3oubHRr67AmR8eEQO966x-LB_Z"></div>
+ 
+                <!-- элемент для вывода ошибок -->
+                <div class="text-danger" id="recaptchaError"></div>
+                 
+                <!-- js-скрипт гугл капчи -->
+                <script src='https://www.google.com/recaptcha/api.js'></script>
+
+                <br>
+
+                <button style="margin-top:10px;">Опубликовать отзыв</button>
+            </div>
+		<? endwhile; ?>
+    </div>
+    <div class="page-right-col">
+		<? dynamic_sidebar( 'obzor-right' ); ?>
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+***************************************************************************
+
+
+
+    var add_comments = $('.comments-form.bk button');
+    $(add_comments).click(function (e) {
+        e.preventDefault();
+
+        var captcha = grecaptcha.getResponse();
+
+if (!captcha.length) {
+  // Выводим сообщение об ошибке
+  $('#recaptchaError').text('* Вы не прошли проверку "Я не робот"');
+} else {
+
+        var name = $('.review-name').val();
+        var email = $('.review-email').val();
+        var plus = $('.plus1').val();
+        var minus = $('.minus1').val();
+        var rating = $('.set_rating .selected').data('note');
+        var data = {
+            'action': 'add_reviews',
+            'post': post_id,
+            'name': name,
+            'email': email,
+            'rating': rating,
+            'plus': plus,
+            'minus': minus,
+        };
+        if (name && email && rating && (plus || minus)) {
+            if ($('#ch2').is(":checked")) {
+                $(this).text('Сохранение...');
+                $.ajax({
+                    url: ajaxurl,
+                    data: data,
+                    type: 'POST',
+                    success: function (data) {
+                        if (data) {
+                            $('.comments-form').css('background-image','none');
+                            $('.comments-form').html('<div style="font-size: 17px;">Ваш отзыв успешно добавлен, после модерации он обязательно будет опубликован.</div>');
+                        } else {
+
+                        }
+                    }
+                });
+            } else {
+                alert('Примите соглашение!');
+            }
+        } else {
+            alert('Все поля обязательные!');
+        }
+
+}
+// end
+
+    });
