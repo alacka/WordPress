@@ -1,0 +1,161 @@
+<script type="application/javascript">
+var ajaxurl = '<?php echo site_url() ?>/wp-admin/admin-ajax.php';
+</script>
+
+<?
+            $per_page = 99;
+            $total    = wp_count_comments( $post_id )->approved;
+            $pages    = ceil( $total / $per_page );
+            $comments = get_comments( array(
+                'post_id' => get_the_ID(),
+                'number'  => $per_page,
+                'status'  => 'approve'
+            ) );
+            if ( $comments ):
+                ?>
+
+<?
+                    foreach ( $comments as $comment ) :
+
+                        ?>
+                        
+                        
+                        
+                        
+/* тело коментаря */
+
+ <div class="card-rait">
+                                            <a href="#">Полезный отзыв?</a>
+                                            <button type="button" class="likecomm" curentline="<? echo get_comment_meta( get_comment_ID(), 'lajk' )[0]; ?>" comm_id="<? echo get_comment_ID(); ?>">
+                                                <div class="icon like">
+                                                    <svg class="icon icon-like"><use xlink:href="#icon-like"></use></svg>
+                                                </div>
+                                                <div class="count"><? echo get_comment_meta( get_comment_ID(), 'lajk' )[0]; ?></div>
+                                            </button>
+                                            <button type="button" class="discomm">
+                                                <div class="icon dis">
+                                                    <svg class="icon icon-like"><use xlink:href="#icon-like"></use></svg>
+                                                </div>
+                                                <div class="count"><? echo $minus; ?></div>
+                                            </button>
+                                        </div>
+                                        
+/* тело коментаря */
+
+
+<? endforeach; ?>
+<? endif; ?>
+
+
+
+
+
+
+
+
+
+JS
+
+
+
+
+$('.likecomm').click(function (e) {
+        e.preventDefault();
+        var likecomm = $('.likecomm').attr('curentline');
+        var comm_id = $('.likecomm').attr('comm_id');
+        var data = {
+            'action': 'like',
+            'commid': comm_id,
+            'likecomm': likecomm,
+        };
+        $.ajax({
+                    url: ajaxurl,
+                    data: data,
+                    type: 'POST',
+                    success: function (data) {
+                        if (data) {
+                            $('.card-rait').html('Ваш отзыв успешно добавлен');
+                        } else {
+
+                        }
+                    }
+                });
+
+
+
+});
+
+
+
+
+
+
+Func *******************
+
+
+
+function like() {
+
+$comm_id          = $_POST['commid'];
+$likecomm         = $_POST['likecomm'];
+
+$likecomm++;
+
+
+    update_field( 'field_5e99a7bb5b906', $likecomm, get_comment($comm_id) ); 
+
+
+
+
+    $ret = '1';
+    echo $ret;
+
+
+    die();
+
+
+
+}
+
+add_action( 'wp_ajax_like', 'like' );
+add_action( 'wp_ajax_nopriv_like', 'like' );
+
+
+
+
+
+Func 2 ***********
+
+
+
+
+
+function like() {
+
+$comm_id          = $_POST['commid'];
+$likecomm         = $_POST['likecomm'];
+
+$likecomm++;
+
+
+    $comment_ID = (int) $comm_id;
+    $_POST['comment_author'] = '1111111';
+    $_POST['comment_ID'] = (int) $comm_id;
+    wp_update_comment($_POST);
+
+
+
+
+    $ret = '1';
+    echo $ret;
+
+
+    die();
+
+
+
+}
+
+add_action( 'wp_ajax_like', 'like' );
+add_action( 'wp_ajax_nopriv_like', 'like' );
+                                        
