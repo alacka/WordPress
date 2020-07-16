@@ -27,8 +27,10 @@ function video_post_types(){
 		'rewrite' => array("slug" => "video"), // Permalinks format
         'hierarchical' => false,
 	'menu_position'       => 5,
-            'menu_icon'           => 'dashicons-book',
+        'menu_icon'           => 'dashicons-book',
+	'has_archive' => true,
 	);
+    // ПЕРЕСОХРАНИТЬ - Настройки постоянных ссылок
     // регистрация
 	register_post_type('video', $args );   
     
