@@ -1,0 +1,29 @@
+.arrow {
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+}
+
+.right {
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+}
+
+.left {
+  transform: rotate(135deg);
+  -webkit-transform: rotate(135deg);
+}
+
+
+
+$('.ult-carousel-20749188635fd10eaa96166').slick({
+  infinite: true,
+  slidesToShow: 3,
+  dots: false,
+  slidesToScroll: 1,
+  arrows: true,
+  nextArrow: '<button type="button" class="slick-next"><i class="arrow right"></i></button>',
+  prevArrow: '<button type="button" class="slick-prev"><i class="arrow left"></i></button>',
+
+});
