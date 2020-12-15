@@ -1,0 +1,1 @@
+<?php $theme_locations = get_nav_menu_locations(); $menu_obj = get_term( $theme_locations['footerone'], 'nav_menu' ); echo $menu_obj->name; ?>
